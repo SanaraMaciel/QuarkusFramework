@@ -1,0 +1,7 @@
+* O Quarkus é uma stack que irá utilizar as melhores bibliotecas java e os melhores padrões.
+
+* Ele se adapta perfeitamente à Era Cloud, pois ataca pontos como: rápido startup, baixo consumo de memória, entre outros.
+
+* Nos oferece uma forma fácil de criar as nossas aplicações, usando o https://code.quarkus.io/
+
+* Juntamente com a Graal VM, conseguimos criar a imagem nativa das nossas aplicações, o que significa que teremos um executável que será executado em linguagem de máquina, com um tamanho extremamente pequeno.

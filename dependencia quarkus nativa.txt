@@ -1,0 +1,8 @@
+<profiles>
+    <profile>
+        <id>native</id>
+        <properties>
+            <quarkus.package.type>native</quarkus.package.type>
+        </properties>
+    </profile>
+</profiles>

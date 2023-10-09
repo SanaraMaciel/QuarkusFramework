@@ -1,0 +1,6 @@
+
+Para saber mais: Ahead-of-time
+PRÓXIMA ATIVIDADE
+
+Um dos motivos do Quarkus ser muito rápido em tempo de inicialização, é que ele utiliza uma técnica chamada Ahead-of-time (AOT) e isso significa que o código será compilado antecipadamente. Essa técnica irá ajudar a eliminar sobrecargas de compilação durante a execução da aplicação. Isto é feito transformando o bytecode da VM (Virtual Machine) em código de máquina. Em aplicações padrões, o que ocorre é que o bytecode será executado e frequentemente o código será compilado para linguagem de máquina, usando o Just-in-Time (JIT).
+
