@@ -1,0 +1,37 @@
+Quarkus links:
+
+* https://github.com/quarkusio/quarkus-quickstarts
+
+* https://github.com/quarkusio/quarkus-quickstarts/tree/main/security-keycloak-authorization-quickstart
+
+* https://marcus-paulo.medium.com/tutorial-criando-um-crud-utilizando-quarkus-java-rest-cdi-panache-hibernate-com-postgres-59793e0d7162
+
+* https://www.linkedin.com/pulse/tutorial-quarkus-simplificando-o-hibernate-panache-da-silva-melo/
+
+* https://github.com/marcuspaulo/quarkus-panache-car/blob/master/src/main/resources/application.properties
+
+* https://www.youtube.com/watch?v=pBc0qSLaHO8&list=PLZzPRVfe8BbE6pVSv_9OMQPuoeQ71ZSMH&index=66
+
+* https://www.youtube.com/watch?v=PF-tSW6sMaE&list=PLZzPRVfe8BbE6pVSv_9OMQPuoeQ71ZSMH&index=35
+
+* https://www.youtube.com/watch?v=jik377ND_iU
+
+* https://www.youtube.com/watch?v=LJTZQo0kbFY
+
+* https://github.com/marcuspaulo#tutorial-quarkus---simplificando-o-hibernate-utilizando-panache---criando-uma-aplica%C3%A7%C3%A3o-simples-utilizando-quarkus-java--rest--cdi--panache
+
+* https://github.com/marcuspaulo
+
+* https://quarkus.io/guides/rest-client
+
+* https://www.linkedin.com/pulse/tutorial-criando-um-crud-utilizando-quarkus-java-rest-da-silva-melo/?originalSubdomain=pt
+
+* https://github.com/fernandobalieiro/quarkus-rest-client-form-bug/blob/client-reactive/rest-client/src/main/java/org/acme/rest/client/RequestResource.java
+
+* https://github.com/quarkusio/quarkus-quickstarts
+
+CURSOS:
+
+* https://www.udemy.com/course/des-web-quarkus/?couponCode=CUPOM23
+ 
+* https://www.udemy.com/course/des-web-quarkus/
