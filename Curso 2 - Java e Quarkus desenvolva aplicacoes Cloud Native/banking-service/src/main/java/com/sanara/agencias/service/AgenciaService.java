@@ -14,7 +14,7 @@ import java.util.List;
 @ApplicationScoped
 public class AgenciaService {
 
-    @RestClient
+    @RestClient //anotação necessária para o rest client ser injetado e entendido pelo Quarkus
     SituacaoCadastralHttpService situacaoCadastralHttpService;
 
     private final List<Agencia> agencias = new ArrayList<>();

@@ -16,11 +16,25 @@ public class AgenciaController {
         this.agenciaService = agenciaService;
     }
 
+    /**
+     * O RestResponse indica o status http da operação, diferentemente do Response o RestResponse é tipificado,
+     * ou seja, ele retorna um RestResponse<Agencia>, nesse caso ele retorna um RestResponse<Void> porque não vamos retornar a agencia
+     * apenas o status pra saber se deu certo ou não
+     *
+     * Ao retornar um 201 (Created), queremos informar o path específico onde foi criado. Por isso, utilizamos @Context
+     * para obter o contexto da requisição e a URI de onde veio a solicitação. Nesse caso, criamos uma variável
+     * uriInfo do tipo UriInfo.
+     *
+     * @param agencia
+     * @return
+     */
     @POST
     public RestResponse<Void> cadastrar(Agencia agencia, @Context UriInfo uriInfo) {
         this.agenciaService.cadastrar(agencia);
         return RestResponse.created(uriInfo.getAbsolutePathBuilder().build());
     }
+
+
 
     @GET
     @Path("{id}")
