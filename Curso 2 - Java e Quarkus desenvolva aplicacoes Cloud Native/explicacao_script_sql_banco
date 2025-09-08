@@ -1,0 +1,29 @@
+2. Script SQL para inicializar o banco de dados
+
+Crie um arquivo chamado init.sql na raiz do projeto (mesmo local do docker-compose.yml) e adicione o seguinte conteúdo:
+
+create table if not exists endereco(
+    id serial primary key,
+    rua text not null,
+    logradouro text not null,
+    complemento text not null,
+    numero int not null
+);
+
+create table if not exists agencia(
+    id serial primary key,
+    nome text not null,
+    razao_social text not null,
+    cnpj text not null,
+    endereco_id int references endereco
+);
+Copiar código
+Explicação do script SQL:
+
+endereco: Cria uma tabela para armazenar informações de endereço, como rua, logradouro, complemento e numero.
+agencia: Cria uma tabela para armazenar informações de agências, incluindo nome, razao_social e cnpj. A coluna endereco_id é uma chave estrangeira que faz referência ao id da tabela endereco.
+Executando o banco de dados
+
+Após salvar o docker-compose.yml e o init.sql, no terminal, navegue até a raiz do projeto e execute o seguinte comando:
+
+docker compose up

@@ -2,8 +2,9 @@ package com.sanara.agencias.service;
 
 import com.sanara.agencias.domain.Agencia;
 import com.sanara.agencias.domain.http.AgenciaHttp;
-import com.sanara.agencias.exception.AgenciaNaoAtivaOuNaoEncontradaException;
 import com.sanara.agencias.domain.http.SituacaoCadastral;
+import com.sanara.agencias.exception.AgenciaNaoAtivaOuNaoEncontradaException;
+import com.sanara.agencias.repository.AgenciaRepository;
 import com.sanara.agencias.service.http.SituacaoCadastralHttpService;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -18,6 +19,12 @@ public class AgenciaService {
     SituacaoCadastralHttpService situacaoCadastralHttpService;
 
     private final List<Agencia> agencias = new ArrayList<>();
+
+    private final AgenciaRepository agenciaRepository;
+
+    AgenciaService(AgenciaRepository agenciaRepository) {
+        this.agenciaRepository = agenciaRepository;
+    }
 
     public void cadastrar(Agencia agencia) {
         AgenciaHttp agenciaHttp = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
@@ -36,8 +43,12 @@ public class AgenciaService {
         agencias.removeIf(agencia -> agencia.getId().equals(id));
     }
 
-    public void alterar(Agencia agencia) {
+    public void alterarAnterior(Agencia agencia) {
         deletar(agencia.getId());
         agencias.add(agencia);
+    }
+
+    public void alterar(Agencia agencia) {
+        agenciaRepository.update(agencia.getNome(), agencia.getRazaoSocial(), agencia.getCnpj(), agencia.getId());
     }
 }

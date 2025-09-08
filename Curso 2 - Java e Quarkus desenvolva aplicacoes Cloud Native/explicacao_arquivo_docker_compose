@@ -1,0 +1,25 @@
+1. Configuração do Docker Compose
+
+Crie um arquivo docker-compose.yml na raiz do projeto e adicione o seguinte conteúdo:
+
+services:
+postgres-db-alura-banking-service:
+    image: postgres:14
+    container_name: postgres-db-alura-banking-service-container
+    environment:
+      - POSTGRES_USER= 
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=agencia
+    ports:
+      - 5433:5432
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+Copiar código
+Explicação dos parâmetros:
+
+image: Define a versão da imagem PostgreSQL que será utilizada (postgres:14).
+container_name: Nome do container para fácil identificação.
+environment: Configura o usuário (escolha o de sua preferência), a senha (escolha a de sua preferência) e o banco de dados (agencia) que será criado automaticamente.
+ports: Mapeia a porta padrão do PostgreSQL (5432) para a 5433 na sua máquina. (É necessário ser 5433 pois a 5432 já está sendo utilizada pela API).
+volumes: Mapeia o arquivo init.sql, que contém o script SQL de criação de tabelas, para ser executado automaticamente na inicialização.
+
