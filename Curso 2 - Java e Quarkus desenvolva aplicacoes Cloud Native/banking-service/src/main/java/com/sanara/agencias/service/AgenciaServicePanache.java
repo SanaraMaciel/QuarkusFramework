@@ -10,40 +10,48 @@ import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @ApplicationScoped
-public class AgenciaService {
+public class AgenciaServicePanache {
+
+    @RestClient //anotação necessária para o rest client ser injetado e entendido pelo Quarkus
+    SituacaoCadastralHttpService situacaoCadastralHttpService;
+
+    private final List<Agencia> agencias = new ArrayList<>();
 
     private final AgenciaRepository agenciaRepository;
 
-    AgenciaService(AgenciaRepository agenciaRepository) {
+    public AgenciaServicePanache(AgenciaRepository agenciaRepository) {
         this.agenciaRepository = agenciaRepository;
     }
 
-    @RestClient
-    SituacaoCadastralHttpService situacaoCadastralHttpService;
-
     public void cadastrar(Agencia agencia) {
         AgenciaHttp agenciaHttp = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
-        if(agenciaHttp != null && agenciaHttp.getSituacaoCadastral().equals(SituacaoCadastral.ATIVO)) {
+        if (agenciaHttp != null && agenciaHttp.getSituacaoCadastral() == SituacaoCadastral.ATIVO) {
             Log.info("Agencia com CNPJ " + agencia.getCnpj() + " foi adicionada");
-            agenciaRepository.persist(agencia);
+            agencias.add(agencia);
         } else {
             Log.info("Agencia com CNPJ " + agencia.getCnpj() + " não ativa ou não encontrada");
             throw new AgenciaNaoAtivaOuNaoEncontradaException();
         }
     }
 
-    public Agencia buscarPorId(Long id) {
-        return agenciaRepository.findById(id);
+    public Agencia buscarPorId(Integer id) {
+        return agencias.stream().filter(agencia -> agencia.getId().equals(id)).toList().getFirst();
     }
 
-    public void deletar(Long id) {
-        Log.info("A agência foi deletada");
-        agenciaRepository.deleteById(id);
+    public void deletar(Integer id) {
+        agencias.removeIf(agencia -> agencia.getId().equals(id));
+    }
+
+    public void alterarAnterior(Agencia agencia) {
+        deletar(agencia.getId());
+        agencias.add(agencia);
     }
 
     public void alterar(Agencia agencia) {
-        Log.info("A agência com CNPJ " + agencia.getCnpj() + " foi alterada");
-        agenciaRepository.update("nome = ?1, razaoSocial = ?2, cnpj = ?3 where id = ?4", agencia.getNome(), agencia.getRazaoSocial(), agencia.getCnpj(), agencia.getId());
+        agenciaRepository.update(agencia.getNome(), agencia.getRazaoSocial(), agencia.getCnpj(), agencia.getId());
     }
 }

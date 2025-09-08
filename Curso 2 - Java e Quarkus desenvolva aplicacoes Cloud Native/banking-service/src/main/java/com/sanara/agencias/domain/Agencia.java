@@ -37,4 +37,16 @@ public class Agencia {
     public Endereco getEndereco() {
         return endereco;
     }
+
+    Agencia() {
+
+    }
+
+    public Agencia(Integer id, String nome, String razaoSocial, String cnpj, Endereco endereco) {
+        this.id = id;
+        this.nome = nome;
+        this.razaoSocial = razaoSocial;
+        this.cnpj = cnpj;
+        this.endereco = endereco;
+    }
 }
