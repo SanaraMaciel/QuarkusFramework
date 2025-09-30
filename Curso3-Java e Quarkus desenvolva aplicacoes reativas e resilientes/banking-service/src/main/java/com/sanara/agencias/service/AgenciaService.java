@@ -8,6 +8,7 @@ import com.sanara.agencias.repository.AgenciaRepository;
 import com.sanara.agencias.service.http.SituacaoCadastralHttpService;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.quarkus.logging.Log;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -25,19 +26,29 @@ public class AgenciaService {
     @RestClient
     SituacaoCadastralHttpService situacaoCadastralHttpService;
 
-    public void cadastrar(Agencia agencia) {
-        AgenciaHttp agenciaHttp = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
-        if(agenciaHttp != null && agenciaHttp.getSituacaoCadastral().equals(SituacaoCadastral.ATIVO)) {
+    public Uni<Void> cadastrar(Agencia agencia) {
+        Uni<AgenciaHttp> agenciaHttp = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
+
+       return agenciaHttp.onItem().ifNull().failWith(new AgenciaNaoAtivaOuNaoEncontradaException())
+                .onItem().transformToUni(item -> persistirSeAtiva(agencia, item));
+
+    }
+
+    private Uni<Void> persistirSeAtiva(Agencia agencia, AgenciaHttp agenciaHttp) {
+        if( agenciaHttp.getSituacaoCadastral().equals(SituacaoCadastral.ATIVO)) {
             //adiciona métrica de agencia adicionada
             this.meterRegistry.counter("agencia_adicionada_count").increment();
             Log.info("Agencia com CNPJ " + agencia.getCnpj() + " foi adicionada");
-            agenciaRepository.persist(agencia);
+            //replaceWithVoid força a aplicação a retornar um void msm querendo que retorne valor
+           return agenciaRepository.persist(agencia).replaceWithVoid();
         } else {
             Log.info("Agencia com CNPJ " + agencia.getCnpj() + " não ativa ou não encontrada");
             //adiciona métrica de agencia nao adicionada
             this.meterRegistry.counter("agencia_nao_adicionada_count").increment();
-            throw new AgenciaNaoAtivaOuNaoEncontradaException();
+            //cria um uni que falha com a exception
+            return Uni.createFrom().failure(new AgenciaNaoAtivaOuNaoEncontradaException());
         }
+
     }
 
     public Agencia buscarPorId(Long id) {

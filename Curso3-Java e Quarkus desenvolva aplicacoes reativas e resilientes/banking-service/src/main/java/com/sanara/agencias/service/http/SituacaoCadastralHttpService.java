@@ -1,6 +1,7 @@
 package com.sanara.agencias.service.http;
 
 import com.sanara.agencias.domain.http.AgenciaHttp;
+import io.smallrye.mutiny.Uni;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -14,5 +15,6 @@ public interface SituacaoCadastralHttpService {
 
     @GET
     @Path("{cnpj}")
-    AgenciaHttp buscarPorCnpj(String cnpj);
+    //O Uni promete uma promessa de retorno de valor
+    Uni<AgenciaHttp> buscarPorCnpj(String cnpj);
 }

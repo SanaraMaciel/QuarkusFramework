@@ -2,6 +2,7 @@ package com.sanara.agencias.controller;
 
 import com.sanara.agencias.domain.Agencia;
 import com.sanara.agencias.service.AgenciaService;
+import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -18,7 +19,7 @@ public class AgenciaController {
     }
 
     @POST
-    @Transactional
+    @WithTransaction //mantém a transação aberta explicitamente, garantindo que a transação iniciada no controle permaneça aberta até o repository.
     public RestResponse<Void> cadastrar(Agencia agencia, @Context UriInfo uriInfo) {
         this.agenciaService.cadastrar(agencia);
         return RestResponse.created(uriInfo.getAbsolutePathBuilder().build());
