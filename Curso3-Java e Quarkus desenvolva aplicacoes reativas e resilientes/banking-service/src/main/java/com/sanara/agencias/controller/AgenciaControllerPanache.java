@@ -46,8 +46,8 @@ public class AgenciaControllerPanache {
 
     @DELETE
     @Path("{id}")
-    public RestResponse<Void> deletar(Integer id) {
-        this.agenciaService.deletar(id);
+    public RestResponse<Void> deletar(Long id) {
+        this.agenciaService.deletarPanache(id);
         return RestResponse.ok();
     }
 

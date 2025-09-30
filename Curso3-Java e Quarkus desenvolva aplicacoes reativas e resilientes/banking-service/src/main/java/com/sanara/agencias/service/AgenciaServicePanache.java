@@ -28,7 +28,9 @@ public class AgenciaServicePanache {
     }
 
     public void cadastrar(Agencia agencia) {
-        AgenciaHttp agenciaHttp = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
+
+        AgenciaHttp agenciaHttp = situacaoCadastralHttpService.buscarPorCnpjPanache(agencia.getCnpj());
+
         if (agenciaHttp != null && agenciaHttp.getSituacaoCadastral() == SituacaoCadastral.ATIVO) {
             Log.info("Agencia com CNPJ " + agencia.getCnpj() + " foi adicionada");
             agencias.add(agencia);
@@ -42,12 +44,12 @@ public class AgenciaServicePanache {
         return agencias.stream().filter(agencia -> agencia.getId().equals(id)).toList().getFirst();
     }
 
-    public void deletar(Integer id) {
+    public void deletarPanache(Long id) {
         agencias.removeIf(agencia -> agencia.getId().equals(id));
     }
 
     public void alterarAnterior(Agencia agencia) {
-        deletar(agencia.getId());
+        deletarPanache(agencia.getId());
         agencias.add(agencia);
     }
 

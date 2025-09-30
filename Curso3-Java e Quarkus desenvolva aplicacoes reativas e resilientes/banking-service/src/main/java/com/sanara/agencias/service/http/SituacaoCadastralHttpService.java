@@ -15,6 +15,10 @@ public interface SituacaoCadastralHttpService {
 
     @GET
     @Path("{cnpj}")
-    //O Uni promete uma promessa de retorno de valor
+        //O Uni promete uma promessa de retorno de valor
     Uni<AgenciaHttp> buscarPorCnpj(String cnpj);
+
+    @GET
+    @Path("/panache/{cnpj}")
+    AgenciaHttp buscarPorCnpjPanache(String cnpj);
 }

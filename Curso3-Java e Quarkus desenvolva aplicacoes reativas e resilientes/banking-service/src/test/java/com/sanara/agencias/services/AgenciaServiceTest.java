@@ -42,9 +42,9 @@ public class AgenciaServiceTest {
         {
             Assertions.assertThrows(AgenciaNaoAtivaOuNaoEncontradaException.class, () ->
                     agenciaService.cadastrar(agencia).await().indefinitely());
+            Mockito.verify(agenciaRepository, Mockito.never()).persist(agencia);
         });
 
-        Mockito.verify(agenciaRepository, Mockito.never()).persist(agencia);
     }
 
     @Test
