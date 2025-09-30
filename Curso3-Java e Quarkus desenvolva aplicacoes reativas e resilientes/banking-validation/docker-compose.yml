@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  banking-validation:
+    image: sanara/banking-validation:v2
+    container_name: banking-validation-container
+    environment:
+      - QUARKUS_DATASOURCE_USERNAME=sanara
+      - QUARKUS_DATASOURCE_PASSWORD=T@njiro192168
+      - QUARKUS_DATASOURCE_HOST=postgres-db-validation
+      - QUARKUS_DATASOURCE_PORT=5432
+    ports:
+      - "8181:8181"
+    depends_on:
+      - postgres-db-validation
+
+  postgres-db-validation:
+    image: postgres:14
+    container_name: postgres-db-validation-container
+    environment:
+      - POSTGRES_USER=sanara
+      - POSTGRES_PASSWORD=T@njiro192168
+      - POSTGRES_DB=agencia
+    ports:
+      - "5434:5432" # evitar conflito com o outro banco
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data_validation:/var/lib/postgresql/data
+
+volumes:
+  postgres_data_validation:
