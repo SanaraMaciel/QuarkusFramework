@@ -12,6 +12,7 @@ import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @ApplicationScoped
@@ -28,12 +29,17 @@ public class AgenciaService {
     @RestClient
     SituacaoCadastralHttpService situacaoCadastralHttpService;
 
+    @WithTransaction
+    @CircuitBreaker(
+            requestVolumeThreshold = 5,
+            failureRatio = 0.5,
+            delay = 2000,
+            successThreshold = 2
+    )
     public Uni<Void> cadastrar(Agencia agencia) {
         Uni<AgenciaHttp> agenciaHttp = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
-
         return agenciaHttp.onItem().ifNull().failWith(new AgenciaNaoAtivaOuNaoEncontradaException())
                 .onItem().transformToUni(item -> persistirSeAtiva(agencia, item));
-
     }
 
     private Uni<Void> persistirSeAtiva(Agencia agencia, AgenciaHttp agenciaHttp) {

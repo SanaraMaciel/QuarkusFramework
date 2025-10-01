@@ -99,6 +99,12 @@
             <artifactId>quarkus-container-image-docker</artifactId>
         </dependency>
 
+        <!-- dependencia para circuitbreaker -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-fault-tolerance</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
