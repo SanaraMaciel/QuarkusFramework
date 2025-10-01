@@ -13,6 +13,7 @@ import io.quarkus.logging.Log;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 @ApplicationScoped
@@ -36,6 +37,9 @@ public class AgenciaService {
             delay = 2000,
             successThreshold = 2
     )
+    @Fallback(
+            fallbackMethod = "chamarFallback"
+    )
     public Uni<Void> cadastrar(Agencia agencia) {
         Uni<AgenciaHttp> agenciaHttp = situacaoCadastralHttpService.buscarPorCnpj(agencia.getCnpj());
         return agenciaHttp.onItem().ifNull().failWith(new AgenciaNaoAtivaOuNaoEncontradaException())
@@ -57,6 +61,17 @@ public class AgenciaService {
             return Uni.createFrom().failure(new AgenciaNaoAtivaOuNaoEncontradaException());
         }
 
+    }
+
+    private Uni<Void> chamarFallback(Agencia agencia, Throwable t) {
+        Log.info("Erro ao cadastrar Agencia com o CNPJ: " + agencia.getCnpj());
+        Log.error("Erro ao cadastrar agencia com CNPJ: " + agencia.getCnpj()  , t);
+
+        // retorna excecao:
+        //return Uni.createFrom().failure(t);
+
+        //retorna um objeto nulo
+        return Uni.createFrom().nullItem();
     }
 
     @WithSession //para manter a sessão aberta quando acessa o repositorio
