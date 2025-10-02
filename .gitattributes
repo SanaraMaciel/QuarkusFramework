@@ -1,0 +1,12 @@
+# Forçar GitHub Linguist a entender que é Java
+*.java linguist-detectable=true
+*.java linguist-language=Java
+
+# Ignorar arquivos HTML e de configuração
+*.html linguist-detectable=false
+*.yml linguist-detectable=false
+*.yaml linguist-detectable=false
+*.properties linguist-detectable=false
+*.xml linguist-detectable=false
+*.md linguist-detectable=false
+
