@@ -4,6 +4,7 @@ import com.sanara.agencias.domain.Agencia;
 import com.sanara.agencias.service.AgenciaService;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.smallrye.common.annotation.NonBlocking;
+import io.smallrye.faulttolerance.api.RateLimit;
 import io.smallrye.mutiny.Uni;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -31,6 +32,7 @@ public class AgenciaController {
 
     @GET
     @Path("{id}")
+    @RateLimit(value = 5 , window = 10)
     public Uni<RestResponse<Agencia>> buscarPorId(Long id) {
         // retorno com lamba return this.agenciaService.buscarPorId(id).onItem().transform(agencia -> RestResponse.ok(agencia));
         //retorno com inferencia do Rest direto
